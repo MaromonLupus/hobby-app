@@ -1,31 +1,44 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import MainHead from './components/MainHead.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="container">
+    <div class="row">
+    <div class="col-4 dark">
+      <header class="row justify-content-center align-content-center">
+        <img alt="Vue logo" class="logo mb-4" src="@/assets/logo.svg" width="125" height="125" />
+    
+        <div class="wrapper">
+          <MainHead msg="Hobby App" />
+          <nav>
+            <RouterLink to="/">Main</RouterLink>
+            <RouterLink to="/form">Form</RouterLink>
+          </nav>
+        </div>
+      </header>
     </div>
-  </header>
-
-  <RouterView />
+    <div class="col-8 gray d-flex justify-content-center align-items-center align-content-center">
+      <RouterView />
+    </div>
+  </div>
+  </div>
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
-  max-height: 100vh;
+  height: 100vh;
 }
-
+.dark{
+  background-color: black;
+  color: aliceblue;
+}
+.gray{
+  background-color: gray;
+  color: aliceblue;
+}
 .logo {
   display: block;
   margin: 0 auto 2rem;
