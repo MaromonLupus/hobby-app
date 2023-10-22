@@ -6,20 +6,17 @@ import MainHead from './components/MainHead.vue'
 <template>
   <div class="container">
     <div class="row">
-    <div class="col-4 dark">
+    <div class="col-4">
+      <RouterLink to="/">
       <header class="row justify-content-center align-content-center">
         <img alt="Vue logo" class="logo mb-4" src="@/assets/logo.svg" width="125" height="125" />
-    
         <div class="wrapper">
-          <MainHead msg="Hobby App" />
-          <nav>
-            <RouterLink to="/">Main</RouterLink>
-            <RouterLink to="/form">Form</RouterLink>
-          </nav>
+          <MainHead msg="Hobby App"/>
         </div>
       </header>
+      </RouterLink>
     </div>
-    <div class="col-8 gray d-flex justify-content-center align-items-center align-content-center">
+    <div class="col-8 d-flex justify-content-center align-items-center align-content-center">
       <RouterView />
     </div>
   </div>

@@ -3,4 +3,5 @@ export interface Book {
     author: string;
     isbn: string;
     image?: string;
+    type: string;
 }

@@ -18,6 +18,13 @@
         <input type="text" class="form-control" id="isbn" v-model="book.isbn">
       </div>
 
+      <div class="mb-3">
+        <label for="type" class="form-label">Typ</label>
+        <select id="type" class="form-select" v-model="book.type">
+          <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
+        </select>
+      </div>
+
       <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
   </div>
@@ -25,7 +32,7 @@
     <form @submit.prevent="submitForm">
       <div>
         <div class="d-flex justify-content-center">
-            <div class="btn btn-primary btn-rounded">
+            <div class="btn btn-rounded">
               <img v-if="book.image" :src="book.image" class="mb-3" alt="example placeholder" style="width: 300px;" />
               <input type="file" class="form-control mb-3" id="bookImage" ref="bookImage" @change="handleImageUpload">
             </div>
@@ -44,8 +51,10 @@ export default {
         title: "",
         author: "",
         isbn: "",
-        image: null
-      }
+        image: null,
+        type: ""
+      },
+      types: ["Book", "Coin", "Stamp", "Toy"]  
     };
   },
   methods: {
@@ -73,6 +82,7 @@ export default {
       title: "",
       author: "",
       isbn: "",
+      type: "",
       image: null
     };
   }
