@@ -42,10 +42,43 @@ const filteredBooks = computed(() => {
     );
   });
 });
+const exportData = () => {
+  const dataStr = JSON.stringify(books.value, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  
+  const exportFileDefaultName = 'data.json';
+  
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+}
+
+// Function to import data from a JSON file
+const importData = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  try {
+    const data = await file.text();
+    const parsedData = JSON.parse(data);
+    books.value = parsedData;
+  } catch (error) {
+    alert('Failed to import data: ' + error.message);
+  }
+}
 </script>
 
 <template>
   <div v-if="!selectedBook" class="row">
+    <div class="row mb-4 p-0">
+      <div class="col-md-6 ">
+        <button @click="exportData" class="btn btn-success">Export Data</button>
+      </div>
+      <div class="col-md-6">
+        <input type="file" @change="importData" class="btn btn-info" accept=".json" />
+      </div>
+    </div>
     <div class="col-8">
       <BookFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
     </div>
