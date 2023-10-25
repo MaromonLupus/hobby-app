@@ -1,21 +1,20 @@
 <template>
-<div class="row">
-  <h2>Dodaj nową książkę</h2>
-  <div class="col-5 justify-content-center align-items-center">
-    <form @submit.prevent="submitForm">
-      <div class="mb-3">
+  <div class="row">
+    <h2 class="mb-4">Dodaj nową książkę</h2>
+    <form @submit.prevent="submitForm" class="d-flex">
+      <div class="col-5">
+        <div class="mb-3">
         <label for="title" class="form-label">Tytuł</label>
-        <input type="text" class="form-control" id="title" v-model="book.title">
+        <input type="text" class="form-control" id="title" v-model="book.title" required>
       </div>
-
       <div class="mb-3">
         <label for="author" class="form-label">Autor</label>
-        <input type="text" class="form-control" id="author" v-model="book.author">
+        <input type="text" class="form-control" id="author" v-model="book.author" required>
       </div>
 
       <div class="mb-3">
         <label for="isbn" class="form-label">ISBN</label>
-        <input type="text" class="form-control" id="isbn" v-model="book.isbn">
+        <input type="text" class="form-control" id="isbn" v-model="book.isbn" required>
       </div>
 
       <div class="mb-3">
@@ -24,22 +23,15 @@
           <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
         </select>
       </div>
-
-      <button type="submit" class="btn btn-primary">Zapisz</button>
-    </form>
-  </div>
-  <div class="col-7 justify-content-center align-items-center">
-    <form @submit.prevent="submitForm">
-      <div>
-        <div class="d-flex justify-content-center">
-            <div class="btn btn-rounded">
-              <img v-if="book.image" :src="book.image" class="mb-3" alt="example placeholder" style="width: 300px;" />
-              <input type="file" class="form-control mb-3" id="bookImage" ref="bookImage" @change="handleImageUpload">
-            </div>
-        </div>
     </div>
-    </form>
-  </div>
+    <div class="col-7 d-flex justify-content-center align-items-center">
+      <div>
+        <img v-if="book.image" :src="book.image" class="mb-3" alt="book cover preview" style="width: 300px;" />
+        <input type="file" class="form-control mb-3" id="bookImage" ref="bookImage" @change="handleImageUpload" aria-label="Book Image">
+      </div>
+    </div>
+  </form>
+  <button type="submit" class="btn btn-primary mt-3">Zapisz</button>
 </div>
 </template>
 
@@ -54,7 +46,7 @@ export default {
         image: null,
         type: ""
       },
-      types: ["Book", "Coin", "Stamp", "Toy"]  
+      types: ["Book", "Coin", "Stamp", "Toy"],
     };
   },
   methods: {

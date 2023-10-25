@@ -4,7 +4,6 @@
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
-            <circle style="fill:#4390b1;" cx="25" cy="25" r="25"></circle>
             <line
                 style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
                 x1="25" y1="13" x2="25" y2="38"></line>

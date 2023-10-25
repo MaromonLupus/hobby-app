@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   modelValue: String,
@@ -34,19 +34,20 @@ function onSelectType() {
 </script>
 
 <template>
-  <div class="d-flex">
-    <div class="col-6">
-    <input
-      v-model="searchQuery"
-      @input="onInput"
-      placeholder="Search by title or author"
-    />
-</div>
-<div class="col-6">
-    <select v-model="selectedType" @change="onSelectType">
-      <option v-for="type in types" :value="type">{{ type }}</option>
-
-    </select>
-</div>
+  <div class="row">
+    <div class="col-md-6">
+      <input
+        v-model="searchQuery"
+        @input="onInput"
+        placeholder="Search by title or author"
+        class="form-control"
+      />
+    </div>
+    <div class="col-md-6">
+      <select v-model="selectedType" @change="onSelectType" class="form-select">
+        <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
+      </select>
+    </div>
   </div>
 </template>
+

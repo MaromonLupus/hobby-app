@@ -1,14 +1,25 @@
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue';
+import { ref, computed, defineProps, defineEmits } from 'vue';
 import { type Book } from '../models/book';
 import HobbyCard from '../components/HobbyCard.vue';
 
 const props = defineProps({
-  books: Array as () => Book[]
+  books: {
+    type: Array as () => Book[],
+    default: () => []
+  }
 });
 
+const emit = defineEmits(['book-click']);
+
+const showBookDetails = (book: Book) => {
+  emit('book-click', book);
+};
+
+
 const currentPage = ref(1);
-const itemsPerPage = 5; // Adjust as needed
+const itemsPerPage = 1;
+
 
 const totalPages = computed(() => {
   return Math.ceil(props.books.length / itemsPerPage);
@@ -27,27 +38,37 @@ function goToPage(page: number) {
 </script>
 
 <template>
-  <div>
-    <div v-for="book in paginatedBooks" :key="book.isbn">
-      <HobbyCard :book="book" />
-    </div>
-    <div class="pagination">
+    <div v-if="paginatedBooks.length > 0" class="col-12">
+          <HobbyCard v-for="book in paginatedBooks" @click="showBookDetails(book)" :book="book" :key="book.isbn"/>
+      </div>
+      <div v-else>
+        <p>No books available.</p>
+      </div>
+    <div class="pagination" v-if="totalPages > 1">
       <button class="btn btn-primary btn-rounded m-1" @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button class="btn btn-primary btn-rounded m-1" @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next</button>
     </div>
-  </div>
 </template>
 
 <style scoped>
 .pagination {
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 20px;
-    align-content: center;
+    justify-content: space-between;
     align-items: center;
+    margin-top: 20px;
 }
+
 button:disabled {
   cursor: not-allowed;
+}
+
+HobbyCard {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+HobbyCard:hover {
+  transform: scale(1.05);
 }
 </style>
