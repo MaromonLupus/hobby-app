@@ -72,10 +72,10 @@ const importData = async (event) => {
 <template>
   <div v-if="!selectedItem" class="w-100">
     <div class="row">
-      <div class="col-12 col-md-6 mb-4 ">
+      <div class="col-4 mb-4 ">
         <button @click="exportData" class="btn btn-success">Export Data</button>
       </div>
-      <div class="col-12 col-md-6 mb-4">
+      <div class="col-8 mb-4">
         <input type="file" @change="importData" class="btn btn-info" accept=".json" style="width: 100%;" />
       </div>
     </div>
