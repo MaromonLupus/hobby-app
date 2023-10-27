@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { type Book } from '../models/book'
-const props = defineProps<{ book: Book }>()
+import { type Item } from '../models/item'
+const props = defineProps<{ item: Item }>()
 </script>
 
 <template>
-  <div v-if="book" class="d-flex card mb-3">
+  <div v-if="item" class="d-flex card w-100 mb-3">
     <div class="row g-0">
-      <div class="col-md-4 d-flex align-items-center justify-content-center">
-        <img :src="book.image || 'path/to/default/image.jpg'" class="img-fluid rounded-start" alt="Cover of book">
+      <div class="col-12 col-md-4 d-flex align-items-center justify-content-center">
+        <img :src="item.image || 'path/to/default/image.jpg'" class="img-fluid rounded-start" alt="Cover of item">
       </div>
-      <div class="col-md-8">
+      <div class="col-12 col-md-8">
         <div class="card-body">
-          <h5 class="card-title">{{ book.title }}</h5>
-          <p class="card-text">{{ book.author }}</p>
-          <p class="card-text"><small class="text-muted">{{ book.isbn }}</small></p>
+          <h5 class="card-title">{{ item.title }}</h5>
+          <p class="card-text mb-1">{{ item.description }}</p>
+          <p class="card-text mb-1"><small class="text-muted">{{ item.isbn }}</small></p>
         </div>
       </div>
     </div>
@@ -21,15 +21,7 @@ const props = defineProps<{ book: Book }>()
 </template>
 
 <style scoped>
-.card {
-  width: 100%;
-}
-
 .card-title {
-  font-size: 1.25rem; /* Adjust as necessary */
-}
-
-.card-text {
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
 }
 </style>

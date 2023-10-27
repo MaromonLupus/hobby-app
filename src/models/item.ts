@@ -1,6 +1,6 @@
-export interface Book {
+export interface Item {
     title: string;
-    author: string;
+    description: string;
     isbn: string;
     image?: string;
     type: string;

@@ -15,12 +15,12 @@ defineProps<{
 
 
 <style scoped>
-
 .greetings h1.green {
-  color: green; /* or any shade of green you prefer */
+  color: green;
 }
 
 @media (min-width: 1024px) {
+
   .greetings h1,
   .greetings h3 {
     text-align: left;

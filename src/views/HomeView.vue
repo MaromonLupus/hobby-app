@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import BookList from '@/components/BookList.vue';
-import BookFilter from '@/components/BookFilter.vue';
+import ItemList from '@/components/ItemList.vue';
+import ItemFilter from '@/components/ItemFilter.vue';
 import AddButton from '@/components/AddButton.vue';
 import { ref, onMounted, computed } from 'vue';
-import { type Book } from '../models/book';
-import BookDetails from '@/components/BookDetails.vue';
-const books = ref([] as Book[]);
+import { type Item } from '../models/item';
+import ItemDetails from '@/components/ItemDetails.vue';
+const items = ref([] as Item[]);
 const searchQuery = ref('');
-const selectedType = ref('Book');
-const types = ref(["Book", "Coin", "Stamp", "Toy"]);
-const selectedBook = ref(null);
+const selectedType = ref('Item');
+const types = ref(["Item", "Coin", "Stamp", "Toy"]);
+const selectedItem = ref(null);
 
-const showBookDetails = (book) => {
-  selectedBook.value = book;
+const showItemDetails = (item) => {
+  selectedItem.value = item;
 };
 
-const closeBookDetails = () => {
-  selectedBook.value = null;
+const closeItemDetails = () => {
+  selectedItem.value = null;
 };
 
 onMounted(() => {
-  fetchBooks();
+  fetchItems();
 });
 
 function updateType(newType: string) {
   selectedType.value = newType;
 }
 
-function fetchBooks() {
-  books.value = JSON.parse(localStorage.getItem('books') || '[]');
+function fetchItems() {
+  items.value = JSON.parse(localStorage.getItem('items') || '[]');
 }
 
-const filteredBooks = computed(() => {
+const filteredItems = computed(() => {
   const query = searchQuery.value.toLowerCase();
   let type = selectedType.value.toLowerCase();
-  return books.value.filter((book: Book) => {
+  return items.value.filter((item: Item) => {
     return (
-      (book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query)) &&
-      book.type.toLowerCase().match(type)
+      (item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query)) &&
+      item.type.toLowerCase().match(type)
     );
   });
 });
 const exportData = () => {
-  const dataStr = JSON.stringify(books.value, null, 2);
+  const dataStr = JSON.stringify(items.value, null, 2);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-  
+
   const exportFileDefaultName = 'data.json';
-  
+
   const linkElement = document.createElement('a');
   linkElement.setAttribute('href', dataUri);
   linkElement.setAttribute('download', exportFileDefaultName);
@@ -62,7 +62,7 @@ const importData = async (event) => {
   try {
     const data = await file.text();
     const parsedData = JSON.parse(data);
-    books.value = parsedData;
+    items.value = parsedData;
   } catch (error) {
     alert('Failed to import data: ' + error.message);
   }
@@ -70,24 +70,28 @@ const importData = async (event) => {
 </script>
 
 <template>
-  <div v-if="!selectedBook" class="row">
-    <div class="row mb-4 p-0">
-      <div class="col-md-6 ">
+  <div v-if="!selectedItem" class="w-100">
+    <div class="row">
+      <div class="col-12 col-md-6 mb-4 ">
         <button @click="exportData" class="btn btn-success">Export Data</button>
       </div>
-      <div class="col-md-6">
-        <input type="file" @change="importData" class="btn btn-info" accept=".json" />
+      <div class="col-12 col-md-6 mb-4">
+        <input type="file" @change="importData" class="btn btn-info" accept=".json" style="width: 100%;" />
       </div>
     </div>
-    <div class="col-8">
-      <BookFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
+    <div class="row">
+      <div class="col-12 col-md-8 mb-4">
+        <ItemFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
+      </div>
+      <div class="col-12 col-md-4 mb-4">
+        <AddButton></AddButton>
+      </div>
     </div>
-    <div class="col-4">
-      <AddButton></AddButton>
+    <div class="row">
+      <ItemList :items="filteredItems" @item-click="showItemDetails" />
     </div>
-    <BookList :books="filteredBooks" @book-click="showBookDetails" />
   </div>
-  <div v-if="selectedBook" class="row">
-    <BookDetails :book="selectedBook" @close="closeBookDetails" />
+  <div v-if="selectedItem" class="row">
+    <ItemDetails :item="selectedItem" @close="closeItemDetails" />
   </div>
 </template>

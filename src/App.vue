@@ -6,8 +6,8 @@ import MainHead from './components/MainHead.vue'
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
-        <RouterLink to="/" class="col-md-4 mb-4">
+      <div class="col-12 col-md-4">
+        <RouterLink to="/" class="col-12 col-md-4 mb-4">
           <div class="header-content d-flex flex-column justify-content-center align-items-center">
             <img alt="Vue logo" class="logo mb-4" src="@/assets/logo.svg" width="125" height="125" />
             <div class="wrapper">
@@ -16,7 +16,7 @@ import MainHead from './components/MainHead.vue'
           </div>
         </RouterLink>
       </div>
-      <div class="col-md-8 d-flex justify-content-center align-items-center">
+      <div class="col-12 col-md-8 d-flex justify-content-center align-items-center">
         <RouterView />
       </div>
     </div>

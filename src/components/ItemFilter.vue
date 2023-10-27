@@ -34,16 +34,11 @@ function onSelectType() {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-md-6">
-      <input
-        v-model="searchQuery"
-        @input="onInput"
-        placeholder="Search by title or author"
-        class="form-control"
-      />
+  <div class="row align-items-center">
+    <div class="col-12 col-md-6 mb-4">
+      <input v-model="searchQuery" @input="onInput" placeholder="Search by title or description" class="form-control" />
     </div>
-    <div class="col-md-6">
+    <div class="col-12 col-md-6 mb-4">
       <select v-model="selectedType" @change="onSelectType" class="form-select">
         <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
       </select>
