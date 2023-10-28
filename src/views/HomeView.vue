@@ -8,7 +8,7 @@ import ItemDetails from '@/components/ItemDetails.vue';
 const items = ref([] as Item[]);
 const searchQuery = ref('');
 const selectedType = ref('Item');
-const types = ref(["Item", "Coin", "Stamp", "Toy"]);
+const types = ref(["Book", "Coin", "Stamp", "Toy"]);
 const selectedItem = ref(null);
 
 const showItemDetails = (item) => {

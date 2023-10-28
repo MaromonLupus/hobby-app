@@ -1,7 +1,7 @@
 export interface Item {
     title: string;
     description: string;
-    isbn: string;
+    id: string;
     image?: string;
     type: string;
 }

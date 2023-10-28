@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitForm">
-    <h2 class="mb-4">Dodaj nową książkę</h2>
+    <h2 class="mb-4">Dodaj nową rzecz hobby</h2>
     <div class="row">
       <div class="col-12 col-md-5">
         <div class="mb-3">
@@ -13,8 +13,8 @@
         </div>
 
         <div class="mb-3">
-          <label for="isbn" class="form-label">ISBN</label>
-          <input type="text" class="form-control" id="isbn" v-model="item.isbn" required>
+          <label for="id" class="form-label">ID</label>
+          <input type="text" class="form-control" id="id" v-model="item.id" required>
         </div>
 
         <div class="mb-3">
@@ -43,7 +43,7 @@ export default {
       item: {
         title: "",
         description: "",
-        isbn: "",
+        id: "",
         image: null,
         type: ""
       },
@@ -75,7 +75,7 @@ export default {
       this.item = {
         title: "",
         description: "",
-        isbn: "",
+        id: "",
         type: "",
         image: null
       };

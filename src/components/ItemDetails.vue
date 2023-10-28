@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item" class="item-details">
+  <div v-if="item" class="item-details p-3 mt-4">
     <div class="row">
       <div class="col-12 col-md-12 text-right">
         <button @click="closeDetails" class="btn btn-secondary">X</button>
@@ -11,13 +11,13 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-4">
-        <p><strong>Author:</strong> {{ item.description }}</p>
-        <p><strong>ISBN:</strong> {{ item.isbn }}</p>
+      <div class="col-12 " :class="[item.image!=null ? 'col-md-4': '']">
+        <p><strong>Opis:</strong> {{ item.description }}</p>
+        <p><strong>ID:</strong> {{ item.id }}</p>
         <p><strong>Type:</strong> {{ item.type }}</p>
       </div>
-      <div class="col-12 col-md-8">
-        <img v-if="item.image" :src="item.image" alt="Item Cover" class="img-fluid" />
+      <div v-if="item.image!=null" class="col-12 col-md-8">
+        <img :src="item.image" alt="Item Cover" class="img-fluid" />
       </div>
     </div>
   </div>
@@ -40,9 +40,7 @@ const closeDetails = () => {
 <style scoped>
 .item-details {
   border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 20px;
-  border-radius: 5px;
+  border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 </style>

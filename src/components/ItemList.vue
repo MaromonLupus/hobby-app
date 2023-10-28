@@ -18,7 +18,7 @@ const showItemDetails = (item: Item) => {
 
 
 const currentPage = ref(1);
-const itemsPerPage = 4;
+const itemsPerPage = 3;
 
 
 const totalPages = computed(() => {
@@ -39,7 +39,7 @@ function goToPage(page: number) {
 
 <template>
   <div v-if="paginatedItems.length > 0" class="col-12 col-md-12">
-    <HobbyCard v-for="item in paginatedItems" @click="showItemDetails(item)" :item="item" :key="item.isbn" />
+    <HobbyCard class="hobby-card" v-for="item in paginatedItems" @click="showItemDetails(item)" :item="item" :key="item.id" />
   </div>
   <div v-else>
     <p>No items available.</p>
@@ -65,12 +65,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
-HobbyCard {
+.hobby-card {
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  height: 16rem;
 }
 
-HobbyCard:hover {
+.hobby-card:hover {
   transform: scale(1.05);
 }
 </style>
