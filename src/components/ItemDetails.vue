@@ -1,8 +1,11 @@
 <template>
   <div v-if="item" class="item-details p-3 mt-4">
     <div class="row">
-      <div class="col-12 col-md-12 text-right">
-        <button @click="closeDetails" class="btn btn-secondary">X</button>
+      <div class="col-6 col-md-6">
+        <button @click="closeDetails" class="btn btn-secondary">Close</button>
+      </div>
+      <div class="col-6 col-md-6 d-flex justify-content-end">
+        <button @click="deleteItem(item)" class="btn btn-danger">Delete</button>
       </div>
     </div>
     <div class="row mt-2">
@@ -11,12 +14,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 " :class="[item.image!=null ? 'col-md-4': '']">
+      <div class="col-12 " :class="[item.image != null ? 'col-md-4' : '']">
         <p><strong>Opis:</strong> {{ item.description }}</p>
         <p><strong>ID:</strong> {{ item.id }}</p>
         <p><strong>Type:</strong> {{ item.type }}</p>
       </div>
-      <div v-if="item.image!=null" class="col-12 col-md-8">
+      <div v-if="item.image != null" class="col-12 col-md-8">
         <img :src="item.image" alt="Item Cover" class="img-fluid" />
       </div>
     </div>
@@ -30,11 +33,14 @@ const props = defineProps({
   item: Object
 });
 
-const emit = defineEmits(['close']);
-
+const emit = defineEmits(['close','delete-item']);
 const closeDetails = () => {
   emit('close');
 };
+
+const deleteItem = (item: Object) => {
+  emit('delete-item', item);
+}
 </script>
   
 <style scoped>

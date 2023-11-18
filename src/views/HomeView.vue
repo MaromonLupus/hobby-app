@@ -7,16 +7,25 @@ import { type Item } from '../models/item';
 import ItemDetails from '@/components/ItemDetails.vue';
 const items = ref([] as Item[]);
 const searchQuery = ref('');
-const selectedType = ref('Item');
+const selectedType = ref('Book');
 const types = ref(["Book", "Coin", "Stamp", "Toy"]);
 const selectedItem = ref(null);
 
-const showItemDetails = (item) => {
+const showItemDetails = (item: null) => {
   selectedItem.value = item;
 };
 
 const closeItemDetails = () => {
   selectedItem.value = null;
+};
+
+const deleteItem = (itemToDelete: Item) => {
+  closeItemDetails();
+  const index = items.value.findIndex((item) => item.id === itemToDelete.id);
+  if (index !== -1) {
+    items.value.splice(index, 1);
+    localStorage.setItem('items', JSON.stringify(items.value));
+  }
 };
 
 onMounted(() => {
@@ -42,6 +51,7 @@ const filteredItems = computed(() => {
     );
   });
 });
+
 const exportData = () => {
   const dataStr = JSON.stringify(items.value, null, 2);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
@@ -54,8 +64,7 @@ const exportData = () => {
   linkElement.click();
 }
 
-// Function to import data from a JSON file
-const importData = async (event) => {
+const importData = async (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0];
   if (!file) return;
 
@@ -63,6 +72,7 @@ const importData = async (event) => {
     const data = await file.text();
     const parsedData = JSON.parse(data);
     items.value = parsedData;
+    localStorage.setItem('items',JSON.stringify(parsedData));
   } catch (error) {
     alert('Failed to import data: ' + error.message);
   }
@@ -71,15 +81,15 @@ const importData = async (event) => {
 
 <template>
   <div v-if="!selectedItem" class="w-100">
-    <div class="row">
-      <div class="col-4 mb-4 ">
-        <button @click="exportData" class="btn btn-success">Export Data</button>
+    <div class="row align-content-center">
+      <div class="col-6 mb-4 ">
+        <button @click="exportData" class="btn btn-success" style="width: 100%;">Export Data</button>
       </div>
-      <div class="col-8 mb-4">
+      <div class="col-6 mb-4">
         <input type="file" @change="importData" class="btn btn-info" accept=".json" style="width: 100%;" />
       </div>
     </div>
-    <div class="row">
+    <div class="row align-content-center">
       <div class="col-12 col-md-8 mb-4">
         <ItemFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
       </div>
@@ -92,6 +102,6 @@ const importData = async (event) => {
     </div>
   </div>
   <div v-if="selectedItem" class="row">
-    <ItemDetails :item="selectedItem" @close="closeItemDetails" />
+    <ItemDetails :item="selectedItem" @close="closeItemDetails" @delete-item="deleteItem" />
   </div>
 </template>

@@ -40,7 +40,7 @@ function onSelectType() {
     </div>
     <div class="col-12 col-md-6 mb-4">
       <select v-model="selectedType" @change="onSelectType" class="form-select">
-        <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
+        <option v-for="type, i in types" :key="i" :value="type">{{ type }}</option>
       </select>
     </div>
   </div>
