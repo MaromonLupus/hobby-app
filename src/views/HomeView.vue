@@ -73,7 +73,7 @@ const importData = async (event: { target: { files: any[]; }; }) => {
     const parsedData = JSON.parse(data);
     items.value = parsedData;
     localStorage.setItem('items',JSON.stringify(parsedData));
-  } catch (error) {
+  } catch (error:any) {
     alert('Failed to import data: ' + error.message);
   }
 }
