@@ -9,9 +9,16 @@ import MainHead from './components/MainHead.vue'
       <div class="col-12 col-md-4">
         <RouterLink to="/" class="col-12 col-md-4 mb-4">
           <div class="header-content d-flex flex-column justify-content-center align-items-center">
-            <img alt="Vue logo" class="logo mb-4" src="@/assets/logo.svg" width="125" height="125" />
             <div class="wrapper">
-              <MainHead msg="Hobby App"/>
+              <MainHead>
+                <img alt="Vue logo" class="logo mb-4" src="@/assets/logo.svg" width="125" height="125" />
+                <template v-slot:title>
+                  <h1 class="green display-4">Hobby App</h1>
+                </template>
+                <template v-slot:extraTitle>
+                  <h3 class="fs-4">Your Hobby is here</h3>
+                </template>
+              </MainHead>
             </div>
           </div>
         </RouterLink>
@@ -43,6 +50,17 @@ a{
 @media (min-width: 768px) {
   .header-content {
     padding-right: 0;
+  }
+}
+.greetings h1.green {
+  color: green;
+}
+
+@media (min-width: 1024px) {
+
+  .greetings h1,
+  .greetings h3 {
+    text-align: left;
   }
 }
 </style>
