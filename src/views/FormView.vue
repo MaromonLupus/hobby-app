@@ -51,7 +51,6 @@ export default {
     };
   },
   methods: {
-
     handleImageUpload() {
       const imageFile = this.$refs.itemImage.files[0];
       const reader = new FileReader();
@@ -64,12 +63,26 @@ export default {
 
     },
 
-    submitForm() {
-      const items = JSON.parse(localStorage.getItem('items') || '[]');
-      items.push(this.item);
-      localStorage.setItem('items', JSON.stringify(items));
-      this.resetForm();
+    async submitForm() {
+      const apiEndpoint = 'http://localhost:3000/things'; // change to your JSON server endpoint
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.item),
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        alert("Item added successfully!");
+        this.resetForm();
+      } catch (error) {
+        alert(`Failed to add item: ${error}`);
+      }
     },
+
 
     resetForm() {
       this.item = {

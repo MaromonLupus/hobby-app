@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { type Item } from '../models/item';
 import ItemList from '@/components/ItemList.vue';
 import ItemFilter from '@/components/ItemFilter.vue';
 import AddButton from '@/components/AddButton.vue';
-import { ref, onMounted, computed } from 'vue';
-import { type Item } from '../models/item';
 import ItemDetails from '@/components/ItemDetails.vue';
+
+// Your JSON server endpoint
+const apiEndpoint = 'http://localhost:3000/things';
+
 const items = ref([] as Item[]);
 const searchQuery = ref('');
 const selectedType = ref('Book');
@@ -19,13 +23,12 @@ const closeItemDetails = () => {
   selectedItem.value = null;
 };
 
-const deleteItem = (itemToDelete: Item) => {
+const deleteItem = async (itemToDelete: Item) => {
   closeItemDetails();
-  const index = items.value.findIndex((item) => item.id === itemToDelete.id);
-  if (index !== -1) {
-    items.value.splice(index, 1);
-    localStorage.setItem('items', JSON.stringify(items.value));
-  }
+  await fetch(`${apiEndpoint}/${itemToDelete.id}`, {
+    method: 'DELETE',
+  });
+  fetchItems(); // Refresh the list
 };
 
 onMounted(() => {
@@ -36,8 +39,9 @@ function updateType(newType: string) {
   selectedType.value = newType;
 }
 
-function fetchItems() {
-  items.value = JSON.parse(localStorage.getItem('items') || '[]');
+async function fetchItems() {
+  const response = await fetch(apiEndpoint);
+  items.value = await response.json();
 }
 
 const filteredItems = computed(() => {
@@ -51,6 +55,17 @@ const filteredItems = computed(() => {
     );
   });
 });
+
+const addItem = async (newItem: Item) => {
+  await fetch(apiEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newItem),
+  });
+  fetchItems(); // Refresh the list
+};
 
 const exportData = () => {
   const dataStr = JSON.stringify(items.value, null, 2);
@@ -94,7 +109,7 @@ const importData = async (event: { target: { files: any[]; }; }) => {
         <ItemFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
       </div>
       <div class="col-12 col-md-4 mb-4">
-        <AddButton></AddButton>
+        <AddButton @add-item="addItem"></AddButton>
       </div>
     </div>
     <div class="row">
