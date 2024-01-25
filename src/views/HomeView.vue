@@ -1,74 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { type Item } from '../models/item';
+import { onMounted } from 'vue';
 import ItemList from '@/components/ItemList.vue';
 import ItemFilter from '@/components/ItemFilter.vue';
 import AddButton from '@/components/AddButton.vue';
 import ItemDetails from '@/components/ItemDetails.vue';
+import useItemStore from '@/stores/items';
 
-// Your JSON server endpoint
-const apiEndpoint = 'http://localhost:3000/things';
-
-const items = ref([] as Item[]);
-const searchQuery = ref('');
-const selectedType = ref('Book');
-const types = ref(["Book", "Coin", "Stamp", "Toy"]);
-const selectedItem = ref(null);
-
-const showItemDetails = (item: null) => {
-  selectedItem.value = item;
-};
-
-const closeItemDetails = () => {
-  selectedItem.value = null;
-};
-
-const deleteItem = async (itemToDelete: Item) => {
-  closeItemDetails();
-  await fetch(`${apiEndpoint}/${itemToDelete.id}`, {
-    method: 'DELETE',
-  });
-  fetchItems(); // Refresh the list
-};
+const itemStore = useItemStore();
 
 onMounted(() => {
-  fetchItems();
+  itemStore.fetchItems();
 });
-
-function updateType(newType: string) {
-  selectedType.value = newType;
-}
-
-async function fetchItems() {
-  const response = await fetch(apiEndpoint);
-  items.value = await response.json();
-}
-
-const filteredItems = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  let type = selectedType.value.toLowerCase();
-  return items.value.filter((item: Item) => {
-    return (
-      (item.title.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query)) &&
-      item.type.toLowerCase().match(type)
-    );
-  });
-});
-
-const addItem = async (newItem: Item) => {
-  await fetch(apiEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newItem),
-  });
-  fetchItems(); // Refresh the list
-};
 
 const exportData = () => {
-  const dataStr = JSON.stringify(items.value, null, 2);
+  const dataStr = JSON.stringify(itemStore.items, null, 2);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
   const exportFileDefaultName = 'data.json';
@@ -86,7 +31,7 @@ const importData = async (event: { target: { files: any[]; }; }) => {
   try {
     const data = await file.text();
     const parsedData = JSON.parse(data);
-    items.value = parsedData;
+    itemStore.items = parsedData;
     localStorage.setItem('items',JSON.stringify(parsedData));
   } catch (error:any) {
     alert('Failed to import data: ' + error.message);
@@ -95,28 +40,29 @@ const importData = async (event: { target: { files: any[]; }; }) => {
 </script>
 
 <template>
-  <div v-if="!selectedItem" class="w-100">
+  <div v-if="!itemStore.selectedItem" class="w-100">
     <div class="row align-content-center">
       <div class="col-6 mb-4 ">
         <button @click="exportData" class="btn btn-success" style="width: 100%;">Export Data</button>
       </div>
       <div class="col-6 mb-4">
-        <input type="file" @change="importData" class="btn btn-info" accept=".json" style="width: 100%;" />
+        <input type="file" change="importData" class="btn btn-info" accept=".json" style="width: 100%;" />
       </div>
     </div>
     <div class="row align-content-center">
       <div class="col-12 col-md-8 mb-4">
-        <ItemFilter v-model="searchQuery" :types="types" :initialType="selectedType" @update:type="updateType" />
+        <ItemFilter v-model="itemStore.searchQuery" :types="itemStore.types" :initialType="itemStore.selectedType" @update:type="itemStore.updateType" />
       </div>
       <div class="col-12 col-md-4 mb-4">
-        <AddButton @add-item="addItem"></AddButton>
+        <AddButton @add-item="itemStore.addItem"></AddButton>
       </div>
     </div>
     <div class="row">
-      <ItemList :items="filteredItems" @item-click="showItemDetails" />
+      <ItemList :items="itemStore.filteredItems" @item-click="itemStore.showItemDetails" />
     </div>
   </div>
-  <div v-if="selectedItem" class="row">
-    <ItemDetails :item="selectedItem" @close="closeItemDetails" @delete-item="deleteItem" />
+  
+  <div v-if="itemStore.selectedItem" class="row">
+    <ItemDetails :item="itemStore.selectedItem" @item-close="itemStore.closeItemDetails" @delete-item="itemStore.deleteItem" />
   </div>
 </template>

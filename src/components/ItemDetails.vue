@@ -2,10 +2,10 @@
   <div v-if="item" class="item-details p-3 mt-4">
     <div class="row">
       <div class="col-6 col-md-6">
-        <button @click="closeDetails" class="btn btn-secondary">Close</button>
+        <button @click="itemStore.closeItemDetails" class="btn btn-secondary">Close</button>
       </div>
       <div class="col-6 col-md-6 d-flex justify-content-end">
-        <button @click="deleteItem(item)" class="btn btn-danger">Delete</button>
+        <button @click="itemStore.deleteItem(item.id)" class="btn btn-danger">Delete</button>
       </div>
     </div>
     <div class="row mt-2">
@@ -27,20 +27,14 @@
 </template>
   
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import useItemStore from '@/stores/items';
+import { defineProps } from 'vue';
 
+const itemStore = useItemStore();
 const props = defineProps({
   item: Object
 });
 
-const emit = defineEmits(['close','delete-item']);
-const closeDetails = () => {
-  emit('close');
-};
-
-const deleteItem = (item: Object) => {
-  emit('delete-item', item);
-}
 </script>
   
 <style scoped>
